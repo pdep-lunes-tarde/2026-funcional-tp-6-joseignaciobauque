@@ -21,7 +21,7 @@ data Hamburguesa = Hamburguesa {
 -- Parte 1: Hamburgesas
 
 cuartoDeLibra :: Hamburguesa
-cuartoDeLibra = Hamburguesa { precioBase = 20, [Pan, Cheddar, Carne, Pan]}
+cuartoDeLibra = Hamburguesa { precioBase = 20, ingredientes = [Pan, Cheddar, Carne, Pan]}
 
 agregarIngrediente :: Ingrediente -> Hamburguesa -> Hamburguesa
 agregarIngrediente unIngrediente unaHamburguesa = unaHamburguesa {
@@ -41,6 +41,7 @@ agrandar :: Hamburguesa -> Hamburguesa
 agrandar unaHamburguesa
   | tieneCarne unaHamburguesa = agregarIngrediente Carne unaHamburguesa
   | tienePollo unaHamburguesa = agregarIngrediente Pollo unaHamburguesa
+  | otherwise = unaHamburguesa
 
 aplicarPorcentaje :: Number -> Number -> Number
 aplicarPorcentaje unPorcentaje cienporciento = (cienporciento * unPorcentaje)/100
@@ -51,5 +52,5 @@ descuento porcentajeEnNumero unaHamburguesa = unaHamburguesa {
 }
 
 pdepBurger :: Hamburguesa
-pdepBurger = (agrandar.agrandar.agregarIngrediente Cheddar.agregarIngrediente Panceta.aplicarPorcentaje20) cuartoDeLibra 
-   
+pdepBurger =
+    (descuento 20 . agrandar . agrandar . agregarIngrediente Cheddar . agregarIngrediente Panceta) cuartoDeLibra
