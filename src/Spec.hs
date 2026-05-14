@@ -32,7 +32,7 @@ correrTests = hspec $ do
             precioHamburguesa bigPdep `shouldBe` 89
         
         it "dada una hamburguesa, le agrega Papas y un descuento del 30%" $ do
-            delDia bigPdep `shouldBe` bigPdep { precioBase = 14, ingredientes = [Papas, Curry, Cheddar, Pan, Cheddar, Carne, Pan]}
+            delDia bigPdep `shouldBe` bigPdep { precioBase = 14, ingredientes = [Papas, Curry, Cheddar, Carne, Pan, Cheddar, Carne, Pan]}
         
         it "cambia todos los ingredientes base que hayan en la hamburguesa por PatiVegano" $ do
            hacerVeggie cuartoDeLibra `shouldBe` cuartoDeLibra { precioBase = 20, ingredientes = [Pan, QuesoDeAlmendras, PatiVegano, Pan]}

@@ -86,9 +86,11 @@ hacerVeggieIngrediente Carne = PatiVegano
 hacerVeggieIngrediente Pollo = PatiVegano
 hacerVeggieIngrediente Cheddar = QuesoDeAlmendras
 hacerVeggieIngrediente Panceta = BaconDeTofu
+hacerVeggieIngrediente ingrediente = ingrediente  -- <- caso por defecto
 
 funcionPan :: Ingrediente -> Ingrediente
 funcionPan Pan = PanIntegral
+funcionPan ingrediente = ingrediente  -- <- caso por defecto
 
 hacerVeggie :: Hamburguesa -> Hamburguesa
 hacerVeggie unaHamburguesa = unaHamburguesa {
