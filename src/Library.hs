@@ -2,17 +2,20 @@ module Library where
 import PdePreludat
 
 data Ingrediente =
-    Carne | Pan | Panceta | Cheddar | Papas | Pollo | Curry | QuesoDeAlmendras
+    Carne | PatiVegano | Pan | PanIntegral | BaconDeTofu | Panceta | Cheddar | Papas | Pollo | Curry | QuesoDeAlmendras
     deriving (Eq, Show)
 
 precioIngrediente Carne = 20
+precioIngrediente PatiVegano = 10
 precioIngrediente Pan = 2
+precioIngrediente PanIntegral = 3
 precioIngrediente Panceta = 10
 precioIngrediente Cheddar = 10
 precioIngrediente Pollo =  10
 precioIngrediente Curry = 5
 precioIngrediente QuesoDeAlmendras = 15
 precioIngrediente Papas = 10
+precioIngrediente BaconDeTofu = 10
 
 data Hamburguesa = Hamburguesa {
     precioBase :: Number,
@@ -38,6 +41,9 @@ filtracionIngrediente ing = any (== ing)
 tieneCarne :: Hamburguesa -> Bool
 tieneCarne = filtracionIngrediente Carne . ingredientes
 
+tienePatiVegano :: Hamburguesa -> Bool
+tienePatiVegano = filtracionIngrediente PatiVegano . ingredientes
+
 tienePollo :: Hamburguesa -> Bool
 tienePollo  = filtracionIngrediente Pollo . ingredientes
 
@@ -45,6 +51,7 @@ agrandar :: Hamburguesa -> Hamburguesa
 agrandar unaHamburguesa
   | tieneCarne unaHamburguesa = agregarIngrediente Carne unaHamburguesa
   | tienePollo unaHamburguesa = agregarIngrediente Pollo unaHamburguesa
+  | tienePatiVegano unaHamburguesa = agregarIngrediente PatiVegano unaHamburguesa
   | otherwise = unaHamburguesa
 
 aplicarPorcentaje :: Number -> Number -> Number
@@ -72,3 +79,27 @@ delDia :: Hamburguesa -> Hamburguesa
 delDia unaHamburguesa = 
     (descuento 30 . agregarIngrediente Papas) unaHamburguesa
 
+-- Parte 3: Algunos Cambios mas
+
+hacerVeggieIngrediente :: Ingrediente -> Ingrediente
+hacerVeggieIngrediente Carne = PatiVegano
+hacerVeggieIngrediente Pollo = PatiVegano
+hacerVeggieIngrediente Cheddar = QuesoDeAlmendras
+hacerVeggieIngrediente Panceta = BaconDeTofu
+
+funcionPan :: Ingrediente -> Ingrediente
+funcionPan Pan = PanIntegral
+
+hacerVeggie :: Hamburguesa -> Hamburguesa
+hacerVeggie unaHamburguesa = unaHamburguesa {
+    ingredientes = map hacerVeggieIngrediente (ingredientes unaHamburguesa)
+}
+
+cambiarPanDePati :: Hamburguesa -> Hamburguesa
+cambiarPanDePati unaHamburguesa = unaHamburguesa {
+    ingredientes = map funcionPan (ingredientes unaHamburguesa)
+}
+
+dobleCuartoVegano :: Hamburguesa
+dobleCuartoVegano =
+    (hacerVeggie . cambiarPanDePati) dobleCuarto
